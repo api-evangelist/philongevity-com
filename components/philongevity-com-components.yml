@@ -1,0 +1,30 @@
+generated: '2026-09-19'
+method: probed
+source: https://philongevity.com/mcp
+note: >-
+  Phi Longevity ships no browser JS widget library. Its embeddable UI is delivered over MCP as MCP Apps
+  resources — HTML cards an MCP host renders inline — which is the agent-era equivalent of an embeddable
+  component. Both were listed by resources/list on 2026-09-19 and one arrived as an embedded resource
+  content block in the unpaid full_prism_report response.
+families:
+- family: PRISM preview card (MCP Apps)
+  loader: MCP host that supports MCP Apps (resources with mimeType text/html;profile=mcp-app)
+  components:
+  - uri: ui://phi-prism/preview.html
+    name: prism-preview-widget
+    mimeType: text/html;profile=mcp-app
+    description: Interactive preview card — out-of-range flags on synthetic values plus a full-report CTA. No PHI.
+  - uri: ui://phi-prism/preview/{aid}
+    name: per-call preview instance
+    mimeType: text/html;profile=mcp-app
+    description: Returned inline in the unpaid full_prism_report result as a resource content block, keyed by the call's attribution id.
+- family: PRISM preview card (ChatGPT Apps SDK)
+  loader: ChatGPT Apps SDK (skybridge)
+  components:
+  - uri: ui://phi-prism/preview-chatgpt.html
+    name: prism-preview-widget-chatgpt
+    mimeType: text/html+skybridge
+    description: The same preview card served with the Apps SDK MIME type.
+data_resources:
+- {uri: 'phi://catalog/biomarkers', mimeType: application/json, description: 51 biomarkers with units and reference ranges by pillar}
+- {uri: 'phi://docs/methodology', mimeType: text/markdown, description: Phi Score methodology summary (5 pillars, weights)}

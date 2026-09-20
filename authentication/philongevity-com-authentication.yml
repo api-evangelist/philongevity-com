@@ -1,0 +1,41 @@
+generated: '2026-09-19'
+method: searched
+docs: https://philongevity.com/for-agents
+sources:
+- https://philongevity.com/for-agents
+- https://philongevity.com/.well-known/agent-card.json
+- https://github.com/Philongevity/phi-mcp-server
+note: >-
+  There is no OpenAPI to derive from (derive-authentication.py has no input). The profile below is read
+  from the provider's own documentation and confirmed by live anonymous calls on 2026-09-19.
+summary:
+  types: [none]
+  api_key_in: []
+  oauth2_flows: []
+  posture: Every public agent surface is unauthenticated by design.
+schemes:
+- name: mcp-remote-anonymous
+  type: none
+  surfaces: ['https://philongevity.com/mcp', 'https://philongevity.com/mcp-app']
+  evidence: Anonymous POST initialize, tools/list, resources/read and tools/call all returned 200 with no credential. The provider states "No API key required for synthetic analysis" and "Stateless and carries no secrets".
+  origin_policy: Requests carrying a disallowed browser Origin header get HTTP 403 before any tool runs; server-to-server callers send no Origin.
+- name: a2a-anonymous
+  type: none
+  surfaces: ['https://philongevity.com/a2a']
+  evidence: Agent card securitySchemes {} and securityRequirements [] — documented as "intentionally empty"; a consent-gated path for owner-authorized actions is in development and not live.
+- name: stdio-built-in-key
+  type: apiKey
+  in: environment
+  name_of_variable: PHI_MCP_KEY
+  surfaces: ['npx -y @phi-longevity/mcp-server']
+  required: false
+  evidence: README — "A published, rate-limited access key is built in. If you have a dedicated key, set PHI_MCP_KEY to override it." The key authenticates the local package to Phi's gateway; the human user configures nothing.
+- name: paid-tool-x402
+  type: payment
+  protocol: x402
+  surfaces: ['https://philongevity.com/mcp#full_prism_report']
+  evidence: The paid tool is gated by payment rather than identity — a base64 x402 payment payload in the `payment` parameter, per the terms returned by an unpaid call (mcp/philongevity-com-x402-payment-required.json).
+human_app:
+  note: The consumer application (signup at https://philongevity.com/signup) uses account login; it is out of scope for the agent surface and the provider states agents cannot act inside a user's account today.
+identity_of_provider:
+  agent_card_signature: ES256 JWS, kid phi-a2a-2026-08, public key at https://philongevity.com/.well-known/jwks.json

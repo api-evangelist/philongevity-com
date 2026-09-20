@@ -1,0 +1,67 @@
+generated: '2026-09-19'
+method: probed
+sources:
+- https://philongevity.com/mcp
+- https://philongevity.com/.well-known/agent-card.json
+- https://philongevity.com/trust
+- https://philongevity.com/privacy
+standards:
+- id: mcp
+  conforms: true
+  version: '2025-06-18'
+  evidence: POST initialize on https://philongevity.com/mcp returned protocolVersion 2025-06-18, serverInfo phi-longevity 0.9.0, tools/resources/prompts capabilities; tools/list, resources/list, prompts/list, resources/read and tools/call all answered (mcp/philongevity-com-mcp-*.json). Registered in the Official MCP Registry as io.github.Philongevity/phi-longevity-prism.
+- id: mcp-apps
+  conforms: true
+  evidence: resources/list exposes ui://phi-prism/preview.html with mimeType text/html;profile=mcp-app and a text/html+skybridge twin for the ChatGPT Apps SDK; the unpaid full_prism_report response carried an embedded resource content block of that profile.
+- id: a2a-1.0
+  conforms: true
+  evidence: /.well-known/agent-card.json is a 1.0-shaped card (supportedInterfaces[].protocolBinding JSONRPC, protocolVersion "1.0"); /a2a validates gRPC-style method names (SendMessage -> -32602 messageId required; SendStreamingMessage -> -32004 UNSUPPORTED_OPERATION; message/send -> -32601). Graded conformant in a2a/philongevity-com-a2a.yml.
+- id: a2a-ap2-extension
+  conforms: true
+  evidence: capabilities.extensions[] declares https://a2a-protocol.org/extensions/payments/ap2/v1 (required false) with settlement x402, network base, asset USDC, priceUsd 4.99.
+- id: x402
+  conforms: true
+  evidence: >-
+    An unpaid tools/call of full_prism_report on 2026-09-19 returned structuredContent.payment_required
+    (x402Version 1; accepts[0] scheme exact, network base, maxAmountRequired 4990000, asset 0x8335...2913 USDC,
+    payTo, maxTimeoutSeconds 300, resource https://philongevity.com/mcp#full_prism_report) — saved verbatim in
+    mcp/philongevity-com-x402-payment-required.json. The challenge is carried in-band in the MCP result
+    (HTTP 200), not as an HTTP 402.
+- id: jws-signed-agent-card
+  conforms: true
+  evidence: The card carries signatures[] with an ES256 JWS protected header (kid phi-a2a-2026-08, jku https://philongevity.com/.well-known/jwks.json) and the JWKS resolves (200, one EC P-256 key with matching kid). Signature not cryptographically verified in this pass.
+- id: llms-txt
+  conforms: true
+  evidence: https://philongevity.com/llms.txt (200, text/plain, 17.9 KB) follows the llms.txt shape — H1, blockquote summary, H2 link sections — and robots.txt points agents at it.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt and /security.txt both 404.
+- id: oauth2
+  conforms: false
+  evidence: No OAuth anywhere — agent card securitySchemes is {} by design, and /.well-known/oauth-authorization-server, oauth-protected-resource and openid-configuration all 404.
+- id: rfc9728-protected-resource-metadata
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource 404 on the host that serves /mcp; consistent with an unauthenticated resource.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: Errors are JSON-RPC error objects (-32601/-32602/-32004 with google.rpc.ErrorInfo data on /a2a) and MCP isError results; no application/problem+json surface.
+- id: openapi
+  conforms: false
+  evidence: No REST contract — /openapi.json, /openapi.yaml, /swagger.json, /api-docs, /docs 404; /api is a JSON 404 and robots.txt disallows /api/. The MCP tool inputSchemas (JSON Schema) are the only machine-readable operation contracts.
+- id: hipaa
+  conforms: true
+  scope: platform posture, not the agent surface
+  evidence: /trust states records are stored in HIPAA-eligible Google Cloud services (Firestore, Cloud Healthcare API FHIR store, Cloud Storage) "under a signed Google Cloud HIPAA Business Associate Agreement", with analysis on US-pinned Vertex AI under the same agreement. /privacy carries a "HIPAA Alignment Statement" and states Phi Longevity is not a covered entity. This is a published compliance posture, not a third-party certification of Phi Longevity itself.
+- id: soc2 / iso27001
+  conforms: false
+  evidence: /privacy cites Google Cloud's SOC 2 Type II and ISO 27001 — the infrastructure provider's certifications, not Phi Longevity's own. No trust center names a Phi Longevity audit. Recorded as false to avoid crediting an inherited certification.
+domain_standards:
+- id: fhir
+  conforms: false
+  note: >-
+    The trust page says patient records live in a Google Cloud Healthcare API FHIR store and exports include
+    "the canonical FHIR record", but no FHIR surface is exposed to agents or developers — the public contracts
+    are MCP tools over plain biomarker name->value maps. Reward-only — recorded as absent, not penalised.
+- id: hl7v2 / x12 / ccda
+  conforms: false
+  note: Not declared anywhere.

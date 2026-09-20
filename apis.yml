@@ -1,18 +1,78 @@
 aid: philongevity-com
 name: Phi Longevity
-description: 'Phi Longevity is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Phi Longevity is a US health-data intelligence company whose PRISM engine consolidates a person's lab
+  reports, wearable data and clinical notes into one scored, guideline-cited health report, with condition
+  tracks for type-2 diabetes, lupus, cancer survivorship and general wellness. Its public developer surface
+  is agent-native rather than REST: an official MCP server (hosted Streamable HTTP endpoint plus an npm stdio
+  package, six tools, no key required, synthetic or de-identified values only), a signed A2A 1.0 agent card
+  with an AP2/x402 pay-per-use extension, an llms.txt, and a $4.99 USDC per-call paid report settled via
+  x402 on Base. Real medical records are analyzed only inside the authenticated app under a Google Cloud
+  HIPAA BAA — PHI never transits the agent surfaces.
 url: https://raw.githubusercontent.com/api-evangelist/philongevity-com/refs/heads/main/apis.yml
+image: https://philongevity.com/favicon.ico
 x-type: company
 x-source: harvest:a2a-registry
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-19 — live MCP server, A2A agent card, llms.txt and x402 terms verified
+position: Producing
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
 - Company
-apis: []
+- Healthcare
+- Health Data
+- Lab Results
+- Biomarkers
+- Chronic Disease
+- Longevity
+- MCP
+- A2A
+- Agent Payments
+- x402
+- Artificial Intelligence
+apis:
+- name: Phi Longevity PRISM MCP Server
+  description: >-
+    Official Model Context Protocol server for the PRISM biomarker-analysis engine. Hosted Streamable HTTP
+    at https://philongevity.com/mcp (6 tools — analyze_biomarkers, list_supported_biomarkers, quick_check,
+    get_methodology, sample_prism_report, full_prism_report — plus 4 resources and 1 prompt), a 4-tool
+    directory build at /mcp-app, and an npm stdio package @phi-longevity/mcp-server. Anonymous; synthetic
+    or de-identified values only; full_prism_report is paid per call ($4.99 USDC) via x402.
+  image: https://philongevity.com/favicon.ico
+  humanURL: https://philongevity.com/for-agents
+  baseURL: https://philongevity.com/mcp
+  tags: [MCP, Biomarkers, Lab Results, Health Data, x402]
+  properties:
+  - type: MCPServer
+    url: mcp/philongevity-com-mcp.yml
+  - type: Documentation
+    url: https://philongevity.com/for-agents
+  - type: Packages
+    url: packages/philongevity-com-packages.yml
+  - type: Components
+    url: components/philongevity-com-components.yml
+  - type: Sandbox
+    url: sandbox/philongevity-com-sandbox.yml
+  - type: Demo
+    url: https://philongevity.com/demo/prism-mcp-demo.webm
+    name: PRISM MCP server live protocol recording (69 s, MCP Inspector)
+- name: Phi Longevity PRISM A2A Agent
+  description: >-
+    A2A 1.0 agent (JSON-RPC at https://philongevity.com/a2a) with one skill — chronic-disease records
+    consolidation and visit prep — described by an ES256-signed agent card at /.well-known/agent-card.json.
+    Unauthenticated by design; streaming and push notifications declared false and honoured; advertises
+    the AP2 payments extension settled via x402.
+  image: https://philongevity.com/favicon.ico
+  humanURL: https://philongevity.com/for-agents
+  baseURL: https://philongevity.com/a2a
+  tags: [A2A, Agent Card, Health Data, Medical Records, Agent Payments]
+  properties:
+  - type: AgentCard
+    url: a2a/philongevity-com-a2a.yml
+  - type: Documentation
+    url: https://philongevity.com/for-agents
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -21,3 +81,76 @@ maintainers:
 common:
 - type: Website
   url: https://philongevity.com/
+- type: DeveloperPortal
+  url: https://philongevity.com/for-agents
+- type: Documentation
+  url: https://philongevity.com/for-agents
+- type: GettingStarted
+  url: https://philongevity.com/for-agents
+- type: GitHubOrganization
+  url: https://github.com/Philongevity
+- type: Blog
+  url: https://philongevity.com/blog
+- type: FAQ
+  url: https://philongevity.com/faq
+- type: Pricing
+  url: https://philongevity.com/pricing
+- type: SignUp
+  url: https://philongevity.com/signup
+- type: TermsOfService
+  url: https://philongevity.com/terms
+- type: PrivacyPolicy
+  url: https://philongevity.com/privacy
+- type: TrustCenter
+  url: security/philongevity-com-trust-center.yml
+- type: Compliance
+  url: https://philongevity.com/trust
+- type: LLMsTxt
+  url: llms/philongevity-com-llms.txt
+- type: AgentCard
+  url: a2a/philongevity-com-a2a.yml
+- type: MCPServer
+  url: mcp/philongevity-com-mcp.yml
+- type: WellKnown
+  url: well-known/philongevity-com-well-known.yml
+- type: Packages
+  url: packages/philongevity-com-packages.yml
+- type: Conformance
+  url: conformance/philongevity-com-conformance.yml
+- type: ErrorCatalog
+  url: errors/philongevity-com-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/philongevity-com-lifecycle.yml
+- type: Authentication
+  url: authentication/philongevity-com-authentication.yml
+- type: DomainSecurity
+  url: security/philongevity-com-domain-security.yml
+- type: Sandbox
+  url: sandbox/philongevity-com-sandbox.yml
+- type: Conventions
+  url: conventions/philongevity-com-conventions.yml
+- type: ChangeLog
+  url: changelog/philongevity-com-changelog.yml
+- type: Components
+  url: components/philongevity-com-components.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Plans
+  url: plans/philongevity-com-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/philongevity-com-rate-limits.yml
+- type: RegulatoryPosture
+  url: regulatory/philongevity-com-regulatory-posture.yml
+- type: DataSubjectRequest
+  url: https://philongevity.com/privacy
+- type: ExitAssistance
+  url: https://philongevity.com/trust
+- type: Subprocessors
+  url: https://philongevity.com/privacy
+- type: AITransparency
+  url: https://philongevity.com/trust
+x-enrichment:
+  date: '2026-09-19'
+  status: enriched
+  artifacts_added: 28
+  pass: local-v3

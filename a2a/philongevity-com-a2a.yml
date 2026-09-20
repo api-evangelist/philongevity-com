@@ -1,0 +1,96 @@
+generated: '2026-09-19'
+method: probed
+source: https://philongevity.com/.well-known/agent-card.json
+card:
+  file: a2a/philongevity-com-agent-card.json
+  name: Phi Longevity PRISM
+  version: 0.1.0
+  documentation_url: https://philongevity.com/for-agents
+  provider:
+    organization: Phi Longevity
+    url: https://philongevity.com
+  supported_interfaces:
+  - url: https://philongevity.com/a2a
+    protocol_binding: JSONRPC
+    protocol_version: '1.0'
+  capabilities:
+    streaming: false
+    push_notifications: false
+    extended_agent_card: false
+    extensions:
+    - uri: https://a2a-protocol.org/extensions/payments/ap2/v1
+      required: false
+      description: Agent Payments Protocol (AP2) — pay-per-use for the full report, settled via x402.
+      params: {settlement: x402, network: base, asset: USDC, priceUsd: '4.99', facilitatorUrl: 'https://api.cdp.coinbase.com/platform/v2/x402'}
+  default_input_modes: [text/plain, application/json, application/pdf]
+  default_output_modes: [application/json, text/markdown, application/pdf]
+  security_schemes: {}
+  security_requirements: []
+  skill_count: 1
+  skills:
+  - id: chronic_disease_records_and_visit_prep
+    name: Chronic-disease records consolidation & visit prep
+    tags: [health, medical-records, records-consolidation, lab-results, chronic-disease, diabetes, lupus, cancer-survivorship, visit-prep, health-score, evidence-graded, wearables]
+    input_modes: [text/plain, application/json, application/pdf]
+    output_modes: [application/json, text/markdown, application/pdf]
+    security_requirements: []
+  signatures:
+  - alg: ES256
+    kid: phi-a2a-2026-08
+    jku: https://philongevity.com/.well-known/jwks.json
+    typ: application/a2a+json
+    note: Decoded from the JWS protected header. The public key is served at /.well-known/jwks.json (saved as well-known/philongevity-com-jwks.json, kid phi-a2a-2026-08, EC P-256). The signature itself was not cryptographically verified in this pass; presence and key availability are what is recorded.
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: philongevity.com
+  note: Served from the apex with content-type application/json and a content-disposition naming agent-card.json. www.philongevity.com 308-redirects to the apex and resolves to the same body. The legacy /.well-known/agent.json 404s on both hosts. The A2A endpoint https://philongevity.com/a2a also returns the same card on GET. Ownership is not in question — the card's provider.url and every interface URL sit on philongevity.com, the same host that serves the MCP endpoint, llms.txt and the JWKS the card is signed against.
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  protocol_version: '1.0'
+  preferred_transport: null
+  transport: JSONRPC (via supportedInterfaces[0].protocolBinding)
+  hard_checks:
+    capabilities_is_object: true
+    protocol_version_present: true
+    skills_is_array: true
+  optional_fields:
+    default_input_modes: true
+    default_output_modes: true
+    preferred_transport: false
+  grade_basis: capabilities is an OBJECT (streaming, pushNotifications, extendedAgentCard, extensions). protocolVersion is present, declared as "1.0" on supportedInterfaces[0] — where A2A 1.0.0 carries it after supportedInterfaces[] replaced the 0.3-era top-level url/preferredTransport/protocolVersion. skills is an ARRAY with one fully-populated skill (id, name, description, tags, examples, inputModes, outputModes, securityRequirements). defaultInputModes and defaultOutputModes are both declared. preferredTransport is absent because 1.0.0 superseded it with protocolBinding, which the card declares (JSONRPC).
+  deviations:
+  - field: protocolVersion
+    observed: carried on supportedInterfaces[0], not at the top level
+    note: A reader written against A2A 0.3.0 will find no top-level protocolVersion. The card is consistently 1.0-shaped, so this is a shape-coexistence note, not a spec violation.
+  - field: securitySchemes / securityRequirements
+    observed: empty object / empty array
+    note: Deliberate. The provider's /for-agents page states "the public surface is unauthenticated by design; securitySchemes in the Agent Card is intentionally empty" and that a consent-gated owner-authorized path is in development and not live.
+  - field: capabilities.streaming
+    observed: false, and honoured by the endpoint
+    note: A live POST of SendStreamingMessage to /a2a returned JSON-RPC -32004 UNSUPPORTED_OPERATION ("requires streaming capability"), matching the card. SendMessage with empty params returned -32602 "message.messageId is required." — the endpoint is live and validates A2A 1.0 gRPC-style method names.
+  - field: supportedInterfaces[0].tenant
+    observed: empty string
+    note: Harmless; the field is optional in 1.0.
+endpoint_probes:
+- {method: GET, url: 'https://philongevity.com/a2a', http_status: 200, note: returns the agent card body}
+- {method: POST, url: 'https://philongevity.com/a2a', rpc_method: message/send, jsonrpc_error: -32601, note: '"Invalid method." — the endpoint uses 1.0 gRPC-style names, as the docs say'}
+- {method: POST, url: 'https://philongevity.com/a2a', rpc_method: SendMessage, jsonrpc_error: -32602, note: '"message.messageId is required." with google.rpc.ErrorInfo reason INVALID_PARAMS — live, parameter-validating'}
+- {method: POST, url: 'https://philongevity.com/a2a', rpc_method: SendStreamingMessage, jsonrpc_error: -32004, note: UNSUPPORTED_OPERATION}
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://philongevity.com/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json; charset=utf-8
+  body_bytes: 3819
+  body_parses_as: JSON object with AgentCard shape
+  server: Vercel
+  etag: '"eab56e863fde601deb8012976621ad9b"'
+  corroborating_probes:
+  - {url: 'https://www.philongevity.com/.well-known/agent-card.json', http_status: 200, note: redirects to apex}
+  - {url: 'https://philongevity.com/.well-known/agent.json', http_status: 404}
+  - {url: 'https://www.philongevity.com/.well-known/agent.json', http_status: 404}
+  - {url: 'https://philongevity.com/.well-known/jwks.json', http_status: 200}
+surface_relationship:
+  note: Phi Longevity publishes two agent surfaces on one host. A2A — one skill (records consolidation and visit prep) at https://philongevity.com/a2a, advertising AP2/x402 pay-per-use. MCP — a 6-tool Streamable HTTP server at https://philongevity.com/mcp (plus a 4-tool directory build at /mcp-app and an npm stdio package), see mcp/philongevity-com-mcp.yml. There is no REST/OpenAPI contract; the MCP tool inputSchemas are the only machine-readable operation contracts the company publishes.

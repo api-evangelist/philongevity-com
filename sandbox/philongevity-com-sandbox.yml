@@ -1,0 +1,34 @@
+generated: '2026-09-19'
+method: searched
+sources:
+- https://philongevity.com/for-agents
+- https://philongevity.com/mcp
+mode: synthetic-only public surface
+description: >-
+  Phi Longevity has no separate test environment because the entire public agent surface IS the
+  sandbox: every tool accepts SYNTHETIC or de-identified biomarker values only, no key or signup is
+  required, and nothing is stored. Real records are analyzed only inside the authenticated consumer app.
+  There are no test-vs-live key prefixes, no test clocks and no fixture tooling.
+free_fixtures:
+- tool: sample_prism_report
+  description: A complete, pre-generated SAMPLE PRISM report on a fixed synthetic persona (58-year-old male, type-2 diabetes; two condition tracks, Phi Score estimate, per-pillar breakdown), clearly watermarked as a sample. Takes no input, returns in under a second. The provider names this "the best single call" for evaluating the product.
+  surface: https://philongevity.com/mcp only
+- tool: quick_check
+  description: Instant out-of-range check on a handful of values; no engine call.
+- tool: full_prism_report (unpaid)
+  description: Calling the paid tool without a payment payload returns a free_preview (range flags on the values sent) plus x402 terms — an honest rehearsal of the paid call with no charge.
+published_example_values:
+  note: Verbatim from /for-agents — "All values shown are synthetic clinical reference-range examples." These are the values the unpaid full_prism_report probe on 2026-09-19 was run with.
+  analyze_biomarkers:
+    biomarkers: {Hemoglobin A1c: 6.4, Fasting Glucose: 118, Triglycerides: 190, ApoB: 105}
+    conditionFocus: type2_diabetes
+    age: 58
+    biologicalSex: male
+  readme_example:
+    biomarkers: {HbA1c: 6.4, LDL-C: 145, Triglycerides: 190}
+    conditionFocus: type2_diabetes
+condition_tracks: [general_wellness, type2_diabetes, lupus, cancer_survivorship]
+biomarker_catalog: phi://catalog/biomarkers (MCP resource) — 51 biomarkers with units and reference ranges across Metabolic, Cardiovascular, Hormonal, Inflammation & Immunity, Foundational Health
+payment_testing:
+  note: No test-mode for x402 is documented. The terms name network base (mainnet) and the CDP facilitator; a real payment settles real USDC.
+data_rule: Do NOT submit protected health information or a real, identifiable person's data through the public interface.

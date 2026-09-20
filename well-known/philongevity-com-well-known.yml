@@ -1,0 +1,53 @@
+generated: '2026-09-19'
+method: probed
+source: Live GET probes of the named /.well-known/* path list on philongevity.com, www.philongevity.com (308 -> apex) and the MCP/A2A host (the same apex — the MCP endpoint is https://philongevity.com/mcp, so there is no separate mcp.* host). Every row is a request that was issued; every status is the one returned.
+summary:
+  hosts_probed: 2
+  documents_served: 2
+  note: >-
+    Two real documents are served, neither on the standard OAuth/API-catalog list: an A2A Agent Card at
+    /.well-known/agent-card.json (application/json, 3,819 bytes, captured in a2a/) and the JWKS it is signed
+    against at /.well-known/jwks.json (one EC P-256 key, kid phi-a2a-2026-08). Every OAuth/OIDC/RFC 9728
+    document 404s, which is consistent with the provider's statement that the agent surfaces are
+    unauthenticated by design. No security.txt, no api-catalog, no apis.json, no ai-plugin.json.
+  negative_control: philongevity.com returns a real 404 (Next.js not-found page, ~12.6 KB text/html) for unknown /.well-known/* paths; the two 200s carried application/json bodies, so this is not a path-echoing host.
+  path_echo_control: passed
+hosts:
+- host: philongevity.com
+  role: Website, MCP endpoint (/mcp, /mcp-app) and A2A endpoint (/a2a) — one host
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    file: a2a/philongevity-com-agent-card.json
+    standard: A2A 1.0.0 Agent Card
+  - path: /.well-known/jwks.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    file: philongevity-com-jwks.json
+    standard: RFC 7517 JWK Set
+    note: Key set the agent card's ES256 JWS signature points at (jku in the protected header).
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/oauth-protected-resource/mcp, status: 404}
+  - {path: /mcp/.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/mcp.json, status: 404}
+  - {path: /.well-known/ucp.json, status: 404}
+  - {path: /.well-known/acp.json, status: 404}
+  - {path: /.well-known/aauth-resource.json, status: 404}
+  - {path: /.well-known/apis.json, status: 404}
+  - {path: /apis.json, status: 404}
+  - {path: /apis.yml, status: 404}
+  - {path: /llms.txt, status: 200, content_type: text/plain; charset=utf-8, file: ../llms/philongevity-com-llms.txt, note: not a well-known path; recorded because robots.txt points agents at it}
+  - {path: /robots.txt, status: 200, note: 'Allow: /, Disallow: /app/ /api/ /verify-email; sitemap declared; comment points AI agents at /llms.txt'}
+- host: www.philongevity.com
+  role: Redirect host — 308 to the apex for every path
+  documents:
+  - {path: /.well-known/agent-card.json, status: 200, note: 308 -> philongevity.com, same body}
+  - {path: /.well-known/agent.json, status: 404}

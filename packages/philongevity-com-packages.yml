@@ -1,0 +1,30 @@
+generated: '2026-09-19'
+method: searched
+source: https://registry.npmjs.org/@phi-longevity%2Fmcp-server
+note: >-
+  The only first-party package is the MCP server itself. It is NOT a client SDK — it is a server an MCP
+  client runs locally over stdio — so no SDKs pointer is emitted. PyPI, RubyGems, crates.io, NuGet, Maven,
+  Packagist and pkg.go.dev were not searched by name because the provider documents no client library
+  anywhere (llms.txt, /for-agents, the GitHub README); the surface is MCP and A2A, not a REST SDK.
+packages:
+- language: javascript
+  registry: npm
+  name: '@phi-longevity/mcp-server'
+  kind: mcp-server
+  url: https://www.npmjs.com/package/@phi-longevity/mcp-server
+  install: npx -y @phi-longevity/mcp-server
+  official: true
+  version: 0.6.6
+  published: '2026-08-16'
+  first_published: '2026-06-10'
+  release_count: 15
+  license: Apache-2.0
+  repository: https://github.com/Philongevity/phi-mcp-server
+  homepage: https://philongevity.com/for-agents
+  bin: phi-mcp-server
+  transport: stdio
+  tools: [analyze_biomarkers, list_supported_biomarkers, quick_check, get_methodology]
+  note: Version and published date read from the npm registry metadata endpoint on 2026-09-19. The hosted endpoint (serverInfo 0.9.0) runs ahead of the package (0.6.6); the two report tools are remote-only.
+registries_also_listing:
+- {name: Official MCP Registry, id: io.github.Philongevity/phi-longevity-prism, version: 0.6.6, published: '2026-08-16'}
+- {name: Smithery, url: 'https://smithery.ai/servers/philongevity/PRISM'}

@@ -1,0 +1,55 @@
+generated: '2026-09-19'
+method: searched
+format: jsonrpc
+source: https://philongevity.com/for-agents
+docs: https://philongevity.com/for-agents#errors
+note: >-
+  There is no REST/OpenAPI surface to derive 4xx/5xx responses from. The provider documents its MCP and
+  A2A error semantics on /for-agents (and repeats them in llms.txt); two of the JSON-RPC errors were
+  observed live on 2026-09-19. The most important rule is that an unpaid paid-tool call is isError: true
+  with a USABLE payload, not a failure.
+problems:
+- code: -32602
+  surface: mcp
+  title: Tool not found
+  shape: 'Returned INSIDE a successful JSON-RPC result as { isError: true, content: [{ type: text, text: "MCP error -32602: Tool <name> not found" }] } — not as a JSON-RPC error object.'
+  remediation: Check tools/list for the surface you connected to; full_prism_report is absent on /mcp-app by design.
+  observed: documented
+- code: isError:true (payment required)
+  surface: mcp
+  title: full_prism_report called without a payment payload
+  shape: Result carries free_preview, an attributed get_full_report_url, and machine-readable x402 payment_required terms.
+  remediation: Do NOT discard the response — it is the intended unpaid behaviour. Show the free preview, hand the owner the attributed link, or pay via x402 and retry the same call with the payment parameter.
+  observed: live 2026-09-19 — note the live response had isError absent (not true) while carrying structuredContent.payment_required; the docs describe it as isError:true
+- status: 403
+  surface: mcp
+  title: Disallowed browser Origin
+  shape: HTTP 403 before any tool runs when the request carries a browser Origin header the server does not allow.
+  remediation: Server-to-server callers normally send no Origin and are unaffected. Do not spoof one.
+  observed: documented
+- code: -32601
+  surface: a2a
+  title: Unknown JSON-RPC method
+  shape: '{ code: -32601, message: "Invalid method." }'
+  remediation: The A2A endpoint uses gRPC-style method names — SendMessage, not message/send.
+  observed: live 2026-09-19 (POST message/send)
+- code: -32602
+  surface: a2a
+  title: Invalid params
+  shape: '{ code: -32602, message: "message.messageId is required.", data: [{ "@type": type.googleapis.com/google.rpc.ErrorInfo, reason: INVALID_PARAMS, domain: a2a-protocol.org }] }'
+  remediation: Supply a full A2A 1.0 Message with messageId.
+  observed: live 2026-09-19 (POST SendMessage {})
+- code: -32004
+  surface: a2a
+  title: Streaming not supported
+  shape: '{ code: -32004, message: "Method SendStreamingMessage requires streaming capability.", data: [{ reason: UNSUPPORTED_OPERATION, domain: a2a-protocol.org }] }'
+  remediation: Use SendMessage and wait for the completed task; the card declares streaming false.
+  observed: live 2026-09-19
+- status: 405
+  surface: mcp
+  title: Method not allowed on GET
+  shape: GET https://philongevity.com/mcp returns 405 application/json.
+  remediation: POST JSON-RPC with Accept application/json, text/event-stream.
+  observed: live 2026-09-19
+timeouts:
+  note: Engine-backed tools (analyze_biomarkers, full_prism_report) take 15-30 s and emit MCP progress notifications; the provider asks clients to set a timeout of at least 60 s. quick_check, list_supported_biomarkers, get_methodology and sample_prism_report return immediately.

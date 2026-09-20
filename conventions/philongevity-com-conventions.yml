@@ -1,0 +1,66 @@
+generated: '2026-09-19'
+method: searched
+sources:
+- https://philongevity.com/for-agents
+- https://philongevity.com/llms.txt
+- https://philongevity.com/mcp
+- https://philongevity.com/terms
+description: Cross-cutting semantics of the Phi Longevity agent surface (MCP + A2A). There is no REST API, so pagination, field expansion, sparse fields and URI versioning do not apply.
+api_style: MCP (Streamable HTTP, JSON-RPC 2.0 over POST with SSE responses) and A2A 1.0 (JSON-RPC, gRPC-style method names)
+base_url: https://philongevity.com/mcp
+authentication:
+  style: none — anonymous by design on every public surface
+  see: authentication/philongevity-com-authentication.yml
+idempotency:
+  supported: false
+  coverage: na
+  mechanism: null
+  note: >-
+    Five of six tools are declared readOnlyHint true / idempotentHint true / destructiveHint false in their
+    MCP annotations and are stateless (inputs are not retained), so repeating them has no side effect. The
+    one operation with consequence — full_prism_report — is idempotentHint false because a paid call settles
+    a USDC payment; no replay key, Idempotency-Key header or payment-nonce dedupe is documented, and the
+    provider's instruction is to "retry this SAME tool call" with the payment payload. There is no write
+    surface to protect (nothing is created, updated or deleted), so coverage is na rather than none; the
+    payment itself is the only non-repeatable action and it is not idempotency-protected.
+reversibility:
+  grade: none
+  write_surface: none — the agent surface creates, updates and deletes nothing
+  operations:
+  - operation: full_prism_report (paid, x402)
+    reversal: null
+    window: null
+    note: No refund, void or reverse operation exists for a per-call x402 payment and no window is stated. The report is returned in the same response the payment settles; a duplicate or mistaken payment has no documented path back.
+  human_subscription:
+    note: For the consumer subscription (outside the agent surface) the Terms state — cancel any time from Account Settings, effective at the end of the billing period, no partial-period refunds; a prorated refund may be requested for a significant technical failure unresolved within 5 business days, granted at the provider's discretion. Recorded for completeness; it is not reachable by an agent.
+  docs: https://philongevity.com/terms
+dry_run:
+  supported: partial
+  mechanism: Calling full_prism_report WITHOUT a payment payload returns the free_preview plus the exact x402 terms for the paid call; quick_check gives an instant no-engine read; sample_prism_report shows the full product output on a fixed persona. None is a formal dry_run flag, but together they let an agent see cost and shape before committing funds.
+pagination: not applicable — tools return whole results; list_supported_biomarkers returns the full 51-entry catalog
+field_expansion: not applicable
+metadata: not applicable — stateless, no stored objects
+request_tracing:
+  header: null
+  note: No request-id header observed. The unpaid paid-tool response carries a per-call `aid` attribution parameter in get_full_report_url (and the embedded preview resource URI), which is the only per-call identifier seen.
+versioning:
+  scheme: semver per surface (remote 0.9.0, npm 0.6.6, card 0.1.0); MCP protocol 2025-06-18
+  see: lifecycle/philongevity-com-lifecycle.yml
+error_envelope:
+  mcp: JSON-RPC 2.0 result with isError + content[] (tool-level errors are inside a successful result); HTTP 403 on disallowed Origin; HTTP 405 on GET
+  a2a: JSON-RPC 2.0 error object with google.rpc.ErrorInfo in data[] (reason INVALID_PARAMS / UNSUPPORTED_OPERATION, domain a2a-protocol.org)
+  see: errors/philongevity-com-problem-types.yml
+rate_limits:
+  documented: false
+  headers: none observed
+  see: rate-limits/philongevity-com-rate-limits.yml
+long_running_calls:
+  note: analyze_biomarkers and full_prism_report take 15-30 s and emit MCP progress notifications; set a client timeout of at least 60 s.
+payment:
+  protocol: x402 (in-band in the MCP result, HTTP 200 — not an HTTP 402)
+  terms: mcp/philongevity-com-x402-payment-required.json
+  flow: call unpaid -> read payment_required.accepts[0] -> sign an exact-scheme USDC authorization on Base -> base64 the payload -> retry the same call with `payment`
+data_rule: SYNTHETIC or de-identified values only on the public surface; PHI is analyzed only inside the authenticated app after owner consent.
+owner_handoff:
+  note: Every unpaid full_prism_report response includes get_full_report_url, an attributed signup deep-link (aid parameter unique to the call); the provider asks agents to surface that URL verbatim.
+webhooks: none — A2A pushNotifications false, streaming false

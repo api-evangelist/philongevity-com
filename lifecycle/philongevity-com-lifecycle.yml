@@ -1,0 +1,31 @@
+generated: '2026-09-19'
+method: searched
+sources:
+- https://philongevity.com/for-agents
+- https://registry.npmjs.org/@phi-longevity%2Fmcp-server
+- https://philongevity.com/terms
+versioning:
+  scheme: semver, per surface — no URI version segment
+  surfaces:
+    mcp_remote: {current: 0.9.0, source: serverInfo.version from initialize on https://philongevity.com/mcp, protocol: '2025-06-18'}
+    npm_package: {current: 0.6.6, published: '2026-08-16', first: '0.1.0 on 2026-06-10', releases: 15}
+    mcp_registry: {current: 0.6.6, published: '2026-08-16', versions_listed: 8}
+    agent_card: {current: 0.1.0, protocol_version: '1.0'}
+  docs: https://philongevity.com/for-agents
+  note: The hosted endpoint runs ahead of the npm package and the two are documented as intentionally different surfaces (6 tools remote, 4 stdio). No versioning policy page exists.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No deprecation policy is published; no Deprecation/Sunset headers were observed on any response. The provider does document one intentional absence — full_prism_report is absent from /mcp-app "by design" — and one future surface, a consent-gated owner-authorized path that is "in development and is NOT live".
+sla:
+  url: null
+  uptime_target: null
+  note: No SLA. The Terms of Service disclaim uninterrupted or error-free operation ("AS IS" / "AS AVAILABLE").
+status_page: null
+status_page_note: /status 404; no status host referenced from llms.txt, /for-agents or the footer.
+change_notice:
+  pricing: Prices may change with 30 days' notice to existing subscribers (Terms §7).
+  privacy_policy: Material changes notified by email at least 30 days before they take effect (Privacy Policy).
+  trust_page_last_updated: '2026-08-20'
+  for_agents_last_updated: '2026-08-26'
+deprecated_operations: []

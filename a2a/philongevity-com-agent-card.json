@@ -1,0 +1,94 @@
+{
+  "name": "Phi Longevity PRISM",
+  "description": "Consolidates a person's disparate medical records across clinicians into one grounded, clinician-ready health report with a health score, and helps them stay current on emerging, evidence-graded research for their conditions. Purpose-built for chronic-disease record-keeping and visit prep (diabetes, lupus, cancer survivorship, and more). Free preview; full report is pay-per-use or claimed into the person's own account. Full analysis runs inside a HIPAA/BAA-covered datastore.",
+  "supportedInterfaces": [
+    {
+      "url": "https://philongevity.com/a2a",
+      "protocolBinding": "JSONRPC",
+      "tenant": "",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "provider": {
+    "url": "https://philongevity.com",
+    "organization": "Phi Longevity"
+  },
+  "version": "0.1.0",
+  "documentationUrl": "https://philongevity.com/for-agents",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extendedAgentCard": false,
+    "extensions": [
+      {
+        "uri": "https://a2a-protocol.org/extensions/payments/ap2/v1",
+        "description": "Agent Payments Protocol (AP2) — pay-per-use for the full report (settled via x402). Free preview requires no payment.",
+        "required": false,
+        "params": {
+          "settlement": "x402",
+          "network": "base",
+          "asset": "USDC",
+          "priceUsd": "4.99",
+          "payTo": "0x03B1484FA7648342597f7bb0ef0f6BBc45A1493A",
+          "facilitatorUrl": "https://api.cdp.coinbase.com/platform/v2/x402"
+        }
+      }
+    ]
+  },
+  "securitySchemes": {},
+  "securityRequirements": [],
+  "defaultInputModes": [
+    "text/plain",
+    "application/json",
+    "application/pdf"
+  ],
+  "defaultOutputModes": [
+    "application/json",
+    "text/markdown",
+    "application/pdf"
+  ],
+  "skills": [
+    {
+      "id": "chronic_disease_records_and_visit_prep",
+      "name": "Chronic-disease records consolidation & visit prep",
+      "description": "Give me a person's disparate records (lab PDFs, discharge/clinic summaries, wearable exports) and I consolidate them into one grounded health report — a health score, trends across clinicians, and a clinician-ready visit-prep brief with evidence-graded suggestions. Returns a free preview; full report is pay-per-use (AP2/x402) or claimed in the person's own Phi account.",
+      "tags": [
+        "health",
+        "medical-records",
+        "records-consolidation",
+        "lab-results",
+        "chronic-disease",
+        "diabetes",
+        "lupus",
+        "cancer-survivorship",
+        "visit-prep",
+        "health-score",
+        "evidence-graded",
+        "wearables"
+      ],
+      "examples": [
+        "Consolidate my mother's diabetes labs from three clinics and prepare a summary for her next endocrinology visit.",
+        "I have lab PDFs from two hospitals and my Oura data — give me a consolidated picture and what to ask my rheumatologist about my lupus.",
+        "Pull my scattered oncology follow-up records into one report and flag what's trending, with graded evidence.",
+        "Prep me for my primary-care visit: consolidate everything, show a health score, and list the questions worth asking."
+      ],
+      "inputModes": [
+        "text/plain",
+        "application/json",
+        "application/pdf"
+      ],
+      "outputModes": [
+        "application/json",
+        "text/markdown",
+        "application/pdf"
+      ],
+      "securityRequirements": []
+    }
+  ],
+  "signatures": [
+    {
+      "protected": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImFwcGxpY2F0aW9uL2EyYStqc29uIiwia2lkIjoicGhpLWEyYS0yMDI2LTA4Iiwiamt1IjoiaHR0cHM6Ly9waGlsb25nZXZpdHkuY29tLy53ZWxsLWtub3duL2p3a3MuanNvbiJ9",
+      "signature": "KYwaRkg3Cxu7jqY5pimJYg0Z9X4j7RPFl6fhUQPykS__1siPdJk49p2zr4kwViEPVTIGZ8jETNVfqAHV3J_bbA"
+    }
+  ]
+}

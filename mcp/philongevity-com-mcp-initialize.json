@@ -1,0 +1,23 @@
+{
+  "result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": true
+      },
+      "resources": {
+        "listChanged": true
+      },
+      "prompts": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "phi-longevity",
+      "version": "0.9.0"
+    },
+    "instructions": "Phi Longevity PRISM — longevity-optimized analysis of biomarker panels. For research/education with SYNTHETIC or de-identified data only. Do NOT submit protected health information (PHI). This endpoint is stateless and does not store inputs."
+  },
+  "jsonrpc": "2.0",
+  "id": 1
+}

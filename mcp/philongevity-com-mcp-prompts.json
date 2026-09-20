@@ -1,0 +1,25 @@
+{
+  "result": {
+    "prompts": [
+      {
+        "name": "analyze-synthetic-panel",
+        "title": "Analyze a synthetic biomarker panel",
+        "description": "Guide the model through analyzing a SYNTHETIC biomarker panel with PRISM and explaining the results in plain language. Never use real PHI.",
+        "arguments": [
+          {
+            "name": "biomarkers_json",
+            "description": "JSON map of biomarker name -> numeric value, e.g. {\"HbA1c\": 6.4}. SYNTHETIC ONLY.",
+            "required": true
+          },
+          {
+            "name": "condition",
+            "description": "Optional track: general_wellness | type2_diabetes | lupus | cancer_survivorship",
+            "required": false
+          }
+        ]
+      }
+    ]
+  },
+  "jsonrpc": "2.0",
+  "id": 1
+}

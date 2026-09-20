@@ -1,0 +1,36 @@
+{
+  "result": {
+    "resources": [
+      {
+        "uri": "ui://phi-prism/preview.html",
+        "name": "prism-preview-widget",
+        "title": "PRISM preview card (MCP Apps)",
+        "description": "Interactive preview card: out-of-range flags on synthetic values + full-report CTA. No PHI — synthetic/preview data only.",
+        "mimeType": "text/html;profile=mcp-app"
+      },
+      {
+        "uri": "ui://phi-prism/preview-chatgpt.html",
+        "name": "prism-preview-widget-chatgpt",
+        "title": "PRISM preview card (ChatGPT/Apps SDK)",
+        "description": "Same preview card served with the Apps SDK MIME type. No PHI — synthetic/preview data only.",
+        "mimeType": "text/html+skybridge"
+      },
+      {
+        "uri": "phi://catalog/biomarkers",
+        "name": "biomarker-catalog",
+        "title": "PRISM biomarker catalog",
+        "description": "The 51 biomarkers PRISM scores, with units and clinical reference ranges, grouped by pillar. Reference data only — no patient data.",
+        "mimeType": "application/json"
+      },
+      {
+        "uri": "phi://docs/methodology",
+        "name": "methodology-summary",
+        "title": "PRISM scoring methodology (summary)",
+        "description": "How the Phi Score is computed: five clinical pillars, weights, and longevity-optimized reference ranges. Full methodology at philongevity.com/methodology.",
+        "mimeType": "text/markdown"
+      }
+    ]
+  },
+  "jsonrpc": "2.0",
+  "id": 1
+}

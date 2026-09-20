@@ -1,0 +1,47 @@
+generated: '2026-09-19'
+method: searched
+source: https://philongevity.com/pricing
+sources:
+- https://philongevity.com/pricing
+- https://philongevity.com/for-agents
+- https://philongevity.com/terms
+provider: Phi Longevity
+providerId: philongevity-com
+plan_count: 3
+description: >-
+  Two consumer plans for the human application (a free first report and one paid subscription), plus one
+  per-call agent price on the MCP surface. All agent tools except full_prism_report are free with no key.
+plans:
+- id: free-first-picture
+  name: Free — Your First Picture
+  audience: human
+  price: 0
+  currency: USD
+  billing_period: none
+  included: [Upload up to 25 files (labs, scans, wearable exports), Phi Score + full five-element health report, One printable clinician brief]
+  limits: {uploads: 25}
+  note: 'No credit card. No time limit. Terms §7: "the free tier does not expire".'
+- id: phi-complete
+  name: Phi Complete
+  audience: human
+  price: 29
+  currency: USD
+  billing_period: monthly
+  annual_price: null
+  annual_note: An Annual toggle is shown on the pricing page but the annual figure is not rendered in the served HTML; recorded as null rather than guessed.
+  included: [30 uploads per month, Five-element health report refreshed as new results arrive, Trends over time, Oura / Google Health / WHOOP wearable sync + daily Phi Score, Updated printable clinician briefs, Unlimited condition-focus switches, Priority processing]
+  limits: {uploads_per_month: 30}
+  cancellation: Cancel anytime; effective at end of billing period; no partial-period refunds (Terms §7)
+  payment: Stripe
+- id: mcp-full-prism-report
+  name: Full PRISM Report (agent, per call)
+  audience: agent
+  price: 4.99
+  currency: USD
+  settlement: USDC on Base via x402 (maxAmountRequired 4990000, 6 decimals)
+  billing_period: per-call
+  included: [Multi-track analysis across up to 4 condition tracks, Panel-based Phi Score estimate with per-pillar breakdown, Evidence-tiered recommendations with peer-reviewed citations, Portable report]
+  surface: https://philongevity.com/mcp#full_prism_report
+  note: Verified by an unpaid tools/call on 2026-09-19 that returned these terms (mcp/philongevity-com-x402-payment-required.json).
+free_agent_tools: [sample_prism_report, analyze_biomarkers, list_supported_biomarkers, quick_check, get_methodology]
+price_change_notice: 30 days to existing subscribers (Terms §7)

@@ -1,0 +1,8 @@
+generated: '2026-09-19'
+method: generated
+note: No provider-published skill file exists (AGENTS.md / SKILL.md 404 in the GitHub repo); the provider's own MCP prompt analyze-synthetic-panel is the closest published equivalent and is referenced by the skill. Grounded in the live MCP tool list, not an OpenAPI — Phi Longevity publishes no REST contract.
+skills:
+- file: philongevity-com-analyze-synthetic-panel.md
+  name: analyze-synthetic-panel-and-hand-off
+  api: mcp/philongevity-com-mcp.yml
+  operations: [sample_prism_report, list_supported_biomarkers, quick_check, analyze_biomarkers, full_prism_report, get_methodology]

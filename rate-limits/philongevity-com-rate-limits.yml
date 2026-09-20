@@ -1,0 +1,31 @@
+generated: '2026-09-19'
+method: searched
+source: https://philongevity.com/for-agents
+sources:
+- https://philongevity.com/for-agents
+- https://github.com/Philongevity/phi-mcp-server
+- https://philongevity.com/mcp
+provider: Phi Longevity
+providerId: philongevity-com
+limit_count: 0
+description: >-
+  No numeric rate limits are published for the hosted MCP endpoint or the A2A endpoint. The only statement
+  is that the npm package's built-in access key is "published, rate-limited + revocable" and can be
+  overridden with a dedicated PHI_MCP_KEY — the number is not given. Anonymous probes on 2026-09-19
+  (initialize, tools/list x2, resources/list, prompts/list, resources/read x2, one tools/call) returned
+  no RateLimit-*, X-RateLimit-* or Retry-After headers and no 429.
+headers:
+  observed: []
+  note: Response headers seen on /mcp — access-control-allow-origin, access-control-expose-headers mcp-session-id, cache-control no-cache, strict-transport-security, x-vercel-*; nothing rate-limit related.
+responseCodes:
+  throttled: unknown
+limits: []
+timeouts:
+- scope: engine-backed tools
+  tools: [analyze_biomarkers, full_prism_report]
+  typical_latency: 15-30 s
+  recommended_client_timeout: '>= 60 s'
+  progress_notifications: true
+- scope: x402 payment
+  maxTimeoutSeconds: 300
+  source: 'payment_required.accepts[0]'

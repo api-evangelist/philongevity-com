@@ -1,0 +1,141 @@
+generated: '2026-09-19'
+method: probed
+status: published
+source: https://philongevity.com/for-agents
+docs: https://philongevity.com/for-agents
+summary: >-
+  Phi Longevity ships an official MCP server for its PRISM biomarker-analysis engine in three deployments,
+  all verified live on 2026-09-19 by anonymous POST initialize / tools/list: a hosted Streamable HTTP
+  endpoint at https://philongevity.com/mcp (6 tools, serverInfo phi-longevity 0.9.0, protocol 2025-06-18),
+  a narrower directory build at https://philongevity.com/mcp-app (4 free tools, no paid tool), and an npm
+  stdio package @phi-longevity/mcp-server (v0.6.6, Apache-2.0, 4 tools). No authentication is required on
+  any of them. The public surface accepts SYNTHETIC or de-identified biomarker values only — the provider
+  states PHI never transits the agent surfaces. One tool (full_prism_report) is paid per call at $4.99 USDC
+  via x402 on Base; an unpaid call returns a free preview plus machine-readable x402 terms (captured
+  verbatim in philongevity-com-x402-payment-required.json).
+deployment:
+  mode: both
+  endpoint: https://philongevity.com/mcp
+  install: npx -y @phi-longevity/mcp-server
+  package: https://www.npmjs.com/package/@phi-longevity/mcp-server
+  auth: none
+  verified: probed
+  authorship: provider
+  note: >-
+    The remote endpoint is the recommended path and carries all 6 tools; the stdio package carries 4 and
+    embeds a published, rate-limited access key (overridable via PHI_MCP_KEY). Both are the provider's own
+    build — the tool surface (analyze_biomarkers, quick_check, sample_prism_report, full_prism_report) is
+    specific to PRISM and shared with no other provider. auth is none: anonymous tools/list and tools/call
+    both succeeded with no credential.
+servers:
+- id: phi-longevity-mcp
+  name: Phi Longevity PRISM (full surface)
+  endpoint: https://philongevity.com/mcp
+  transport: streamable-http
+  stateful: false
+  auth: none
+  status: live
+  probe:
+    method: POST initialize + tools/list + resources/list + prompts/list + tools/call
+    http_status: 200
+    protocol_version: '2025-06-18'
+    server_name: phi-longevity
+    server_version: 0.9.0
+    capabilities: {tools: {listChanged: true}, resources: {listChanged: true}, prompts: {listChanged: true}}
+    fetched: '2026-09-19'
+    tool_count: 6
+    files:
+      tools: mcp/philongevity-com-mcp-tools.json
+      resources: mcp/philongevity-com-mcp-resources.json
+      prompts: mcp/philongevity-com-mcp-prompts.json
+      initialize: mcp/philongevity-com-mcp-initialize.json
+      x402_terms: mcp/philongevity-com-x402-payment-required.json
+  tools:
+  - name: analyze_biomarkers
+    title: Analyze biomarkers (synthetic)
+    input_schema: {biomarkers: 'object<string,number> (required)', conditionFocus: 'enum general_wellness|type2_diabetes|lupus|cancer_survivorship', age: number, biologicalSex: 'enum male|female', include_partner_options: boolean}
+    annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true}
+    latency: 15-30s; emits MCP progress notifications
+    paid: false
+  - name: list_supported_biomarkers
+    title: List supported biomarkers
+    input_schema: {}
+    annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false}
+    paid: false
+  - name: quick_check
+    title: Quick biomarker range check (instant, no analysis)
+    input_schema: {biomarkers: 'object<string,number> (required)'}
+    annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false}
+    paid: false
+  - name: get_methodology
+    title: Get PRISM methodology
+    input_schema: {}
+    annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false}
+    paid: false
+  - name: sample_prism_report
+    title: Sample PRISM report (free, instant, fixed synthetic sample)
+    input_schema: {}
+    annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false}
+    paid: false
+    note: /mcp only
+  - name: full_prism_report
+    title: Full PRISM report (paid — $4.99 USDC via x402)
+    input_schema: {biomarkers: 'object<string,number> (required)', conditionFocus: enum, compareTracks: array, age: number, biologicalSex: enum, payment: 'string (base64 x402 payment payload)'}
+    annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true}
+    paid: true
+    payment:
+      protocol: x402
+      x402Version: 1
+      scheme: exact
+      network: base
+      asset: USDC (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)
+      amount: '4990000 (6 decimals = $4.99)'
+      resource: https://philongevity.com/mcp#full_prism_report
+      maxTimeoutSeconds: 300
+      facilitator: https://api.cdp.coinbase.com/platform/v2/x402
+      verified: probed — an unpaid tools/call on 2026-09-19 returned structuredContent.payment_required with these exact terms plus a free_preview (4 flags) and an attributed signup deep-link
+    note: /mcp only; absent from /mcp-app by design
+  resources:
+  - {uri: 'ui://phi-prism/preview.html', name: prism-preview-widget, mimeType: 'text/html;profile=mcp-app', note: MCP Apps interactive preview card}
+  - {uri: 'ui://phi-prism/preview-chatgpt.html', name: prism-preview-widget-chatgpt, mimeType: text/html+skybridge, note: same card for the ChatGPT Apps SDK}
+  - {uri: 'phi://catalog/biomarkers', name: biomarker-catalog, mimeType: application/json, note: 51 biomarkers with units and reference ranges across 5 pillars (read live 2026-09-19)}
+  - {uri: 'phi://docs/methodology', name: methodology-summary, mimeType: text/markdown}
+  prompts:
+  - {name: analyze-synthetic-panel, arguments: [biomarkers_json (required), condition (optional)]}
+- id: phi-longevity-mcp-app
+  name: Phi Longevity PRISM (directory surface)
+  endpoint: https://philongevity.com/mcp-app
+  transport: streamable-http
+  auth: none
+  status: live
+  probe: {method: POST tools/list, http_status: 200, fetched: '2026-09-19', tool_count: 4, file: mcp/philongevity-com-mcp-app-tools.json}
+  tools: [analyze_biomarkers, list_supported_biomarkers, quick_check, get_methodology]
+  note: Deliberately narrower build for app-directory distribution — no paid tool, no payment doorway. The provider documents that full_prism_report returns "Tool not found" here by design.
+- id: phi-longevity-mcp-stdio
+  name: '@phi-longevity/mcp-server (npm, stdio)'
+  transport: stdio
+  install: npx -y @phi-longevity/mcp-server
+  package: https://www.npmjs.com/package/@phi-longevity/mcp-server
+  version: 0.6.6
+  published: '2026-08-16'
+  license: Apache-2.0
+  repository: https://github.com/Philongevity/phi-mcp-server
+  auth: none
+  status: published
+  tools: [analyze_biomarkers, list_supported_biomarkers, quick_check, get_methodology]
+  env: {PHI_MCP_KEY: 'optional — overrides the built-in published, rate-limited key', PHI_ENGINE_URL: optional gateway override}
+  note: Version and date read from registry.npmjs.org on 2026-09-19. The README states the two report-generating tools are remote-only.
+- id: phi-longevity-mcp-cloudfunction
+  name: Legacy remote (Google Cloud Function)
+  endpoint: https://us-central1-philongevity-aiapp-v2.cloudfunctions.net/phi-mcp-remote
+  transport: streamable-http
+  auth: none
+  status: live-but-superseded
+  probe: {method: POST tools/list, http_status: 200, fetched: '2026-09-19'}
+  note: Named as the remote in MCP Registry versions 0.6.0-0.6.5; the latest registry entry (0.6.6) names https://philongevity.com/mcp instead. Still answers, but not the documented endpoint — recorded for completeness, not as the primary surface.
+registries:
+- {name: Official MCP Registry, id: io.github.Philongevity/phi-longevity-prism, version: 0.6.6, status: active, published: '2026-08-16', url: 'https://registry.modelcontextprotocol.io/v0/servers?search=phi-longevity', remotes: ['https://philongevity.com/mcp'], packages: ['npm @phi-longevity/mcp-server 0.6.6 (stdio)']}
+- {name: Smithery, url: 'https://smithery.ai/servers/philongevity/PRISM', http_status: 200}
+error_semantics:
+  note: Documented at /for-agents and captured in errors/philongevity-com-problem-types.yml — -32602 tool-not-found is returned INSIDE a successful result as isError, an unpaid full_prism_report is isError-with-payload rather than a failure, HTTP 403 on a disallowed browser Origin.
+data_rule: SYNTHETIC or de-identified values only on every public surface; real files are analyzed only inside the authenticated app under a Google Cloud HIPAA BAA.
