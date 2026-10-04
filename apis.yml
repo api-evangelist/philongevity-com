@@ -29,6 +29,19 @@ tags:
 - Longevity
 - MCP
 - A2A
+- Agentic Payments
+- x402
+- Artificial Intelligence
+tags_raw:
+- Company
+- Healthcare
+- Health Data
+- Lab Results
+- Biomarkers
+- Chronic Disease
+- Longevity
+- MCP
+- A2A
 - Agent Payments
 - x402
 - Artificial Intelligence
@@ -154,3 +167,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 28
   pass: local-v3
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://philongevity.com/.well-known/agent-card.json"
+  grade: "flavored"
+  protocol_version: "1.0"
+  control: 404
