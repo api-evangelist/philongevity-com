@@ -45,3 +45,29 @@ plans:
   note: Verified by an unpaid tools/call on 2026-09-19 that returned these terms (mcp/philongevity-com-x402-payment-required.json).
 free_agent_tools: [sample_prism_report, analyze_biomarkers, list_supported_biomarkers, quick_check, get_methodology]
 price_change_notice: 30 days to existing subscribers (Terms §7)
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - subscription
+  units: []
+  plans:
+  - name: Free — Your First Picture
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Phi Complete
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
+  - name: Full PRISM Report (agent, per call)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
