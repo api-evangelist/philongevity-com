@@ -64,5 +64,115 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Phi Longevity is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://philongevity.com/
+Phi Longevity is a US health-data intelligence company whose PRISM engine consolidates a person's lab reports, wearable data and clinical notes into one scored, guideline-cited health report, with condition tracks for type-2 diabetes, lupus, cancer survivorship and general wellness. Its public developer surface is agent-native rather than REST: an official MCP server (hosted Streamable HTTP endpoint plus an npm stdio package, six tools, no key required, synthetic or de-identified values only), a signed A2A 1.0 agent card with an AP2/x402 pay-per-use extension, an llms.txt, and a $4.99 USDC per-call paid report settled via x402 on Base. Real medical records are analyzed only inside the authenticated app under a Google Cloud HIPAA BAA — PHI never transits the agent surfaces.
+
+**Areas:** Company · Healthcare · Health Data · Lab Results · Biomarkers · Chronic Disease · Longevity · MCP · A2A · Agentic Payments · x402 · Artificial Intelligence
+
+## Phi Longevity on APIs.io
+
+Everything profiled for Phi Longevity is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/philongevity-com/](https://apis.io/providers/philongevity-com/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Phi Longevity PRISM MCP Server](https://apis.io/apis/philongevity-com/phi-longevity-prism-mcp-server/) — Official Model Context Protocol server for the PRISM biomarker-analysis engine. Hosted Streamable HTTP at https://philongevity.com/mcp (6 tools —…
+- [Phi Longevity PRISM A2A Agent](https://apis.io/apis/philongevity-com/phi-longevity-prism-a2a-agent/) — A2A 1.0 agent (JSON-RPC at https://philongevity.com/a2a) with one skill — chronic-disease records consolidation and visit prep — described by an…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [philongevity-com-mcp.yml](https://apis.io/servers/philongevity-com/philongevity-com-mcp-yml/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Philongevity Com Authentication](https://apis.io/security/philongevity-com/philongevity-com-authentication/)
+- [Philongevity Com Domain Security](https://apis.io/security/philongevity-com/philongevity-com-domain-security/)
+- [Philongevity Com Trust Center](https://apis.io/security/philongevity-com/philongevity-com-trust-center/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Philongevity Com Plans Pricing](https://apis.io/plans/philongevity-com/philongevity-com-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Philongevity Com Rate Limits](https://apis.io/rate-limits/philongevity-com/philongevity-com-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://philongevity.com/)
+- [Documentation](https://philongevity.com/for-agents)
+- [Getting started](https://philongevity.com/for-agents)
+- [Pricing](https://philongevity.com/pricing)
+- [Sign up](https://philongevity.com/signup)
+- [Blog](https://philongevity.com/blog)
+- [Compliance](https://philongevity.com/trust)
+- [Terms of service](https://philongevity.com/terms)
+- [Privacy policy](https://philongevity.com/privacy)
+- [GitHub](https://github.com/Philongevity)
+
+## API Evangelist rating
+
+**Kin Score 44.9** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 21.1 |
+| Developer ergonomics | 54.2 |
+| Access clarity | 92.1 |
+
+**Agent readiness 18.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | conformant |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 33.8** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/philongevity-com/](https://apis.io/providers/philongevity-com/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Phi Longevity: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/philongevity-com/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
